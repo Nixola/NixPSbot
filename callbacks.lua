@@ -12,6 +12,7 @@ end
 callbacks.register = function(self, func, id)
   --if self.cbs[id] then return nil, "ID exists" end
   if self[id] then return nil, "ID exists" end
+  print("registered", id)
   if not (type(func) == "function") then return nil, "Invalid callback" end
   --self.cbs[id] = func
   self[id] = func
@@ -28,9 +29,8 @@ end
 
 callbacks.fire = function(self, ...)
   --for id, callback in pairs(self.cbs) do
-  for id, callback in pairs(self) do
-    print("fired", id, callback)
-    callback(...)
+  for id, c in pairs(self) do
+    c(...)
   end
 end
 

@@ -10,7 +10,7 @@ local challstring = function(chstr)
   t.pass = "87654132"
   t.challstr = chstr
 
-  local data = post("http://play.pokemonshowdown.com/action.php", t)
+  local data, body = post("http://play.pokemonshowdown.com/action.php", t)
 
   if data:sub(1,1) ~= "]" then
   	print("Error. Aborting.")
@@ -21,6 +21,7 @@ local challstring = function(chstr)
   local assertion = json.decode(data:sub(2, -1)).assertion
 
   send("|/trn " .. t.name .. ",0," .. assertion)
+  print("Logged in, theoretically")
 end
 
-commands.challstr:register(challstring, "challstr")
+COMMANDS.challstr:register(challstring, "login")

@@ -8,7 +8,7 @@ client:on_open(function()
     print('connected')
 end)
 
-client:connect("ws://sim.smogon.com:8000/showdown/websocket")
+client:connect("ws://sim.psim.us:8000/showdown/websocket")
 
 send = function(txt)
   client:send(txt)
@@ -25,7 +25,6 @@ client:on_message(function(ws, msg)
 local plugins = ls "plugins"
 for i = #plugins, 1, -1 do
   local file = plugins[i]
-  print(file)
   local f, e = loadfile(file)
   if f then f()
   else print("Could not load", file, ":", e)

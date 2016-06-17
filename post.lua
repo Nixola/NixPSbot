@@ -16,5 +16,5 @@ return function(url, body)
   	local p = (b == "") and "" or "&"
   	b = b .. p .. url_encode(i) .. "=" .. url_encode(v)
   end
-  return http.request(url, b)
+  return http.request(url, b), b
 end
