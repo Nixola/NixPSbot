@@ -28,7 +28,8 @@ local parse = function(msg)
   for line in msg:gmatch("[^\n]+") do
     lines[#lines+1] = line
   end
-  local room = lines[1]:match("^>(.-)\n")
+  local room = lines[1]:match("^>(.-)\n") or lines[1]:match("^>(.-)$")
+  print("ROOM", room)
 
   if room then table.remove(lines, 1)
   else room = r
