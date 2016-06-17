@@ -44,7 +44,6 @@ local parse = function(msg)
 
     else
       action = lengthen[action] or action
-      print("ACTION", action)
       COMMANDS[action]:fire(rest, room)
     end
   end

@@ -18,7 +18,6 @@ end
 
 local pm = function(rest)
   local sender, target, text = rest:match("^(.-)|(.-)|(.+)$")
-  print(sender, target, text)
   chat(sender .. "|" .. text, "PM")
 end
 
