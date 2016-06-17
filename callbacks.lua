@@ -1,11 +1,11 @@
 local callbacks = {}
 callbacks.mt = {__index = callbacks}
 callbacks.new = function(self, name)
-  if self[name] then return nil, "Callback exists" end
+  --if self[name] then return nil, "Callback exists" end
   local c = setmetatable({}, self.mt)
   --c.name = name
   --c.cbs = {}
-  self[name] = c
+  --self[name] = c
   return c
 end
 

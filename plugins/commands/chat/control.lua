@@ -5,7 +5,7 @@ local raw = function(nick, ...)
     return
   end
 
-  local s = "|" .. table.concat({...}, " ")
+  local s = table.concat({...}, " ")
 
   print("SENDING", s)
 

@@ -1,5 +1,6 @@
 local ev = require('ev')
 local client = require('websocket.client').ev()
+--https://github.com/lipp/lua-websockets
 
 local cb = require "callbacks"
 local ls = require "ls"

@@ -5,7 +5,8 @@ COMMANDS = {}
 setmetatable(COMMANDS, {__index = function(self, name)
     local c, e = cb(name)
     if not c then
-      os.exit()
+      print("ERROR!", e, name)
+      --os.exit()
     end
     --print(name, rawget(self, name))
     self[name] = c
@@ -59,7 +60,8 @@ commands = {}
 setmetatable(commands, {__index = function(self, name)
     local c, e = cb(name)
     if not c then
-      os.exit()
+      print("error!", e, name)
+      --os.exit()
     end
     --print(name, rawget(self, name))
     self[name] = c
