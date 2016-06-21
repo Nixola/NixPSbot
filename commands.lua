@@ -70,4 +70,57 @@ setmetatable(commands, {__index = function(self, name)
 
 --this is basically the same thing as above, but COMMANDS is for internal stuff while this is for chat commands
 
---return commands
+commands.cmd:register(function(nick, ...)
+  local args = {...}
+  local action = args[1]
+
+  table.remove(args, 1)
+
+  local actions = {}
+
+  --print(action)
+
+  if not nick:trueNick(cmdline.master) then
+    return
+  end
+
+  actions.remove = function(nick, command)
+    if commands[command] then
+      commands[command] = nil
+    else
+      send("|/pm " .. nick .. ", The command ``" .. command .. "`` already doesn't exist.")
+    end
+  end
+
+  actions.add = function(nick, cmdname, ...)
+
+    if rawget(commands, cmdname) then
+      send("|/pm " .. nick .. ", The command ``" .. cmdname .. "`` already exists. Use ``addow``.")
+    else
+      return actions.addow(nick, cmdname, ...)
+    end
+  end
+
+  actions.addow = function(nick, cmdname, ...)
+    print(nick, cmdname, ...)
+    commands[cmdname] = nil
+    local command = table.concat({...}, " ")
+    local f, e = loadstring(command)
+    if not f then
+      send("|/pm " .. nick .. ", Error: " .. e)
+      return
+    end
+    commands[cmdname]:register(function(...)
+      local results = {pcall(f, ...)}
+      if not results[1] then
+        print("commands:", cmdname, "failed:", results[2])
+        return
+      end
+      table.remove(results, 1)
+      return unpack(results)
+    end, "commands-"..cmdname)
+  end
+
+
+  if actions[action] then actions[action](nick, unpack(args)) end
+end, "commands")
