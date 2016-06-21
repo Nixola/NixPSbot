@@ -1,12 +1,11 @@
-local post = require "post"
-
-local json = require "rapidjson"
+--local post = require "post"
+--local json = require "rapidjson"
 
 local challstring = function(chstr)
   
   local t = {}
   t.act = "login"
-  t.name = "gzip"
+  t.name = "FuckingClod"
   t.pass = "87654132"
   t.challstr = chstr
 
@@ -24,4 +23,5 @@ local challstring = function(chstr)
   print("Logged in, theoretically")
 end
 
-COMMANDS.challstr:register(challstring, "login")
+--COMMANDS.challstr:register(challstring, "login")
+COMMAND("challstr", challstring, "login")

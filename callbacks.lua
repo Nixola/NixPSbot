@@ -30,7 +30,9 @@ end
 callbacks.fire = function(self, ...)
   --for id, callback in pairs(self.cbs) do
   for id, c in pairs(self) do
-    c(...)
+    if c(...) then
+      self[id] = nil
+    end
   end
 end
 

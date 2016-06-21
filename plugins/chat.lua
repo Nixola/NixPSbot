@@ -12,7 +12,8 @@ local chat = function(rest, room, timestamp)
   	for arg in a:gmatch("%S+") do
   	  args[#args+1] = arg
   	end
-  	commands[command]:fire(nick, unpack(args))
+  	--commands[command]:fire(nick, unpack(args))
+    fire(command, nick, unpack(args))
   end
   print("#" .. room, "<" .. nick .. ">", text)
 end
@@ -28,6 +29,11 @@ local pm = function(rest)
   chat(sender .. "|" .. text, "PM")
 end
 
+--[[
 COMMANDS.chat:register(chat, "chat")
 COMMANDS["c:"]:register(cts, "chat:")
-COMMANDS.pm:register(pm, "chatpm")
+COMMANDS.pm:register(pm, "chatpm")--]]
+
+COMMAND("chat", chat, "chat")
+COMMAND("c:", cts, "chat:")
+COMMAND("pm", pm, "chatpm")
