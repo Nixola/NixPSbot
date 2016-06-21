@@ -3,7 +3,7 @@ local pr = "?"
 local chat = function(rest, room, timestamp)
   local nick, text = rest:match("^(.-)|(.+)$")
   if text:sub(1,1) == pr or room == "PM" then --this is a command!
-  	print(text)
+  	--print(text)
   	local command = text:match("^" .. pr .. "?(%w+)")
   	local args = {}
   	local a = text:match("^.-%s(.-)$")
