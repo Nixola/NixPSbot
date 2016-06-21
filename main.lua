@@ -90,6 +90,8 @@ commands.reload:register(function(nick)
     --env.FIRE    = FIRE
     env.fire    = fire
 
+    env.cmdline = clone(cmdline)
+
     local file = plugins[i]
     local f, e = loadfile(file, "t", env)
 
