@@ -1,9 +1,7 @@
-local master = "nixola"
-
 local raw = function(nick, ...)
 
   --if nick:lower():sub(2, -1) ~= "nixola" then
-  if not nick:trueNick(master) then
+  if not nick:trueNick(cmdline.master) then
     --sendMessage(nick, "fuck off")
     return
   end
@@ -17,7 +15,7 @@ end
 
 
 local pm = function(nick, target, ...)
-  if not nick:trueNick(master) then
+  if not nick:trueNick(cmdline.master) then
     return
   end
 
@@ -26,7 +24,7 @@ end
 
 
 local join = function(nick, room)
-  if not nick:trueNick(master) then
+  if not nick:trueNick(cmdline.master) then
     return
   end
 
@@ -35,7 +33,7 @@ end
 
 
 local say = function(nick, room, ...)
-  if not nick:trueNick(master) then
+  if not nick:trueNick(cmdline.master) then
     return
   end
 

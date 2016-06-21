@@ -14,6 +14,8 @@ for i, v in ipairs(arg) do
     end
 end
 
+cmdline.master = cmdline.master or "nixola"
+
 local cb = require "callbacks"
 local ls = require "ls"
 local clone = require "clone"
@@ -26,7 +28,8 @@ end)
 
 client:connect("ws://sim.psim.us:8000/showdown/websocket")
 
-local send = function(txt)
+--local send = function(txt)
+send = function(txt)
   client:send(txt)
 end
 
@@ -69,7 +72,7 @@ end
 
 commands.reload:register(function(nick)
 
-  if nick and not nick:trueNick "nixola" then
+  if nick and not nick:trueNick(cmdline.master) then
     return
   end
 
