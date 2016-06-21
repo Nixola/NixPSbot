@@ -5,8 +5,8 @@ local challstring = function(chstr)
   
   local t = {}
   t.act = "login"
-  t.name = "FuckingClod"
-  t.pass = "87654132"
+  t.name = cmdline.nick --"FuckingClod"
+  t.pass = cmdline.pass --"87654132"
   t.challstr = chstr
 
   local data, body = post("http://play.pokemonshowdown.com/action.php", t)
