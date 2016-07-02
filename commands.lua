@@ -30,6 +30,9 @@ local parse = function(msg)
     lines[#lines+1] = line
   end
   local room = lines[1]:match("^>(.-)\n") or lines[1]:match("^>(.-)$")
+  if #lines > 10 then
+    return --I refuse to parse all the text that's in the room before joining
+  end
   --print("ROOM", room)
 
   --if room then table.remove(lines, 1)
