@@ -33,6 +33,10 @@ send = function(txt)
   client:send(txt)
 end
 
+local sendPM = function(target, txt)
+  send("|/pm " .. target:trueNick() .. ", " .. txt)
+end
+
 receive = cb("receive")
 
 client:on_message(function(ws, msg)
@@ -68,6 +72,7 @@ string.trueNick = function(str, n)
   return str:gsub("%W", ""):lower()
 end
 
+
 --for _, file in ipairs(ls "plugins") do
 
 commands.reload:register(function(nick)
@@ -81,6 +86,7 @@ commands.reload:register(function(nick)
 
     local env   = {}
     env.send    = send
+    env.sendPM  = sendPM
     env.math    = clone(math)
     env.table   = clone(table)
     env.print   = print -- potentially unsafe or at least annoying
