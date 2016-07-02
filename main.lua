@@ -91,6 +91,8 @@ commands.reload:register(function(nick)
     env.table   = clone(table)
     env.print   = print -- potentially unsafe or at least annoying
     env.unpack  = unpack
+    env.ipairs  = ipairs
+    env.pairs   = pairs
     --env.io      = clone(io) --UNSAFE! WILL CHANGE
     env.json    = clone(require "rapidjson")
     env.post    = require "post"
