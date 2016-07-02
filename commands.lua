@@ -32,8 +32,9 @@ local parse = function(msg)
   local room = lines[1]:match("^>(.-)\n") or lines[1]:match("^>(.-)$")
   --print("ROOM", room)
 
-  if room then table.remove(lines, 1)
-  else room = r
+  --if room then table.remove(lines, 1)
+  if lines[1]:sub(1,1) == ">" then table.remove(lines, 1)
+  --else room = r
   end
   r = room
 
@@ -45,7 +46,7 @@ local parse = function(msg)
     if not action then --just display this? I will create an appropriate callback for this when I know more
 
     else
-      action = lengthen[action] or action
+      action = lengthen[action:lower()] or action
       COMMANDS[action]:fire(rest, room)
     end
   end
@@ -102,7 +103,6 @@ commands.cmd:register(function(nick, ...)
   end
 
   actions.addow = function(nick, cmdname, ...)
-    print(nick, cmdname, ...)
     commands[cmdname] = nil
     local command = table.concat({...}, " ")
     local f, e = loadstring(command)
