@@ -36,7 +36,7 @@ end
 --I could make it depend on chat.lua because of chat and PM, but I don't need the full functionality, the sender will be enough.
 
 local name = function(rest, room)
-  local n1, n2 = rest:match("^(.-)|(.-)$")
+  local n2, n1 = rest:match("^(.-)|(.-)$")
   deliver(n2)
 end
 
