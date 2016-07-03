@@ -2,6 +2,8 @@ local ev = require('ev')
 local client = require('websocket.client').ev()
 --https://github.com/lipp/lua-websockets
 
+os.execute("mkdir ~/.nixPSbot -p")
+
 
 local args = {...}
 cmdline = {}
