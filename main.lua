@@ -75,6 +75,10 @@ string.trueNick = function(str, n)
   return str:gsub("%W", ""):lower()
 end
 
+string.rank = function(str)
+  return str:sub(1,1)
+end
+
 
 --for _, file in ipairs(ls "plugins") do
 
