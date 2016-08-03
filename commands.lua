@@ -73,6 +73,7 @@ setmetatable(commands, {__index = function(self, name)
   end})
 
 --this is basically the same thing as above, but COMMANDS is for internal stuff while this is for chat commands
+--nope, this is a command
 
 commands.cmd:register(function(nick, ...)
   local args = {...}
