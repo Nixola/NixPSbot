@@ -20,7 +20,7 @@ local challstring = function(chstr)
     os.exit()
   elseif assertion == ";" then
     t.act  = "login"
-    t.name = t.userid
+    t.name = cmdline.nick --t.userid
     t.userid = nil
     --t.pass = cmdline.pass
     local data, body = post("http://play.pokemonshowdown.com/action.php", t)
