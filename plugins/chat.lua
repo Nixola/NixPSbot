@@ -1,10 +1,10 @@
-local pr = "?"
+--local pr = "?"
 
 local chat = function(rest, room, timestamp)
   local nick, text = rest:match("^(.-)|(.+)$")
-  if text:sub(1,1) == pr or room == "#PM" then --this is a command!
+  if text:sub(1,1) == prefix or room == "#PM" then --this is a command!
   	--print(text)
-  	local command = text:match("^" .. pr .. "?(%w+)")
+  	local command = text:match("^" .. prefix .. "?(%w+)")
   	local args = {}
   	local a = text:match("^.-%s(.-)$")
   	--print(command)
