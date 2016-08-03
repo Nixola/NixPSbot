@@ -1,5 +1,6 @@
 local ev = require('ev')
 local client = require('websocket.client').ev()
+require "urlencode"
 --https://github.com/lipp/lua-websockets
 
 os.execute("mkdir ~/.nixPSbot -p")
@@ -82,6 +83,8 @@ commands.reload:register(function(nick)
   if nick and not nick:trueNick(cmdline.master) then
     return
   end
+  
+  local get, post = unpack(require "connect")
 
   local plugins = ls "plugins"
   for i = #plugins, 1, -1 do
@@ -95,9 +98,11 @@ commands.reload:register(function(nick)
     env.unpack  = unpack
     env.ipairs  = ipairs
     env.pairs   = pairs
+    env.select  = select
     --env.io      = clone(io) --UNSAFE! WILL CHANGE
     env.json    = clone(require "rapidjson")
-    env.post    = require "post"
+    env.get     = get
+    env.post    = post
     env.COMMAND = COMMAND
     env.command = command
     --env.FIRE    = FIRE
