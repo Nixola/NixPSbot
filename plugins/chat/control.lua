@@ -38,7 +38,7 @@ local say = function(nick, room, ...)
   end
 
   local s = table.concat({...}, " ")
-  send(room:trueNick() .. "|" .. s)
+  send(room:gsub("[^%w-]", "") .. "|" .. s)
 end
 
 --commands.raw:register(raw, "control")
