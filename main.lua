@@ -75,7 +75,11 @@ string.trueNick = function(str, n)
   return str:gsub("%W", ""):lower()
 end
 
-string.rank = function(str)
+string.rank = function(str, rank)
+  local r = str:sub(1,1)
+  if rank then
+    return rank:match(r)
+  end
   return str:sub(1,1)
 end
 
