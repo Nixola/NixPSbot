@@ -1,6 +1,6 @@
 local tells = {}
 
-local tell = function(nick, ...) --this is the command
+local tell = function(nick, room, ...) --this is the command
   nick = nick:trueNick()
   local s = table.concat({...}, " ")
   if not s:match("^.-%,.-$") then

@@ -1,4 +1,4 @@
-local raw = function(nick, ...)
+local raw = function(nick, room, ...)
 
   --if nick:lower():sub(2, -1) ~= "nixola" then
   if not nick:trueNick(cmdline.master) then
@@ -14,7 +14,7 @@ local raw = function(nick, ...)
 end
 
 
-local pm = function(nick, target, ...)
+local pm = function(nick, room, target, ...)
   if not nick:trueNick(cmdline.master) then
     return
   end
@@ -23,22 +23,22 @@ local pm = function(nick, target, ...)
 end
 
 
-local join = function(nick, room)
+local join = function(nick, room, targetRoom)
   if not nick:trueNick(cmdline.master) then
     return
   end
 
-  send("|/j " .. room)
+  send("|/j " .. targetRoom)
 end
 
 
-local say = function(nick, room, ...)
+local say = function(nick, room, targetRoom, ...)
   if not nick:trueNick(cmdline.master) then
     return
   end
 
   local s = table.concat({...}, " ")
-  send(room:gsub("[^%w-]", "") .. "|" .. s)
+  send(targetRoom:gsub("[^%w-]", "") .. "|" .. s)
 end
 
 --commands.raw:register(raw, "control")
