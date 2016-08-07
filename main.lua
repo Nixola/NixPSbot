@@ -68,6 +68,10 @@ local fire = function(cmd, ...)
   return commands[cmd]:fire(...)
 end
 
+local rec = function(func, id)
+  receive:register(func, id)
+end
+
 string.trueNick = function(str, n)
   if n then
     return str:trueNick() == n
@@ -97,28 +101,36 @@ commands.reload:register(function(nick)
   local plugins = ls "plugins"
   for i = #plugins, 1, -1 do
 
-    local env   = {}
-    env.send    = send
-    env.sendPM  = sendPM
-    env.math    = clone(math)
-    env.table   = clone(table)
-    env.print   = print -- potentially unsafe or at least annoying
-    env.unpack  = unpack
-    env.ipairs  = ipairs
-    env.pairs   = pairs
-    env.select  = select
-    --env.io      = clone(io) --UNSAFE! WILL CHANGE
-    env.json    = clone(require "rapidjson")
-    env.get     = get
-    env.post    = post
-    env.COMMAND = COMMAND
-    env.command = command
-    --env.FIRE    = FIRE
-    env.fire    = fire
+    local env        = {}
+    env.send         = send
+    env.sendPM       = sendPM
+    env.math         = clone(math)
+    env.table        = clone(table)
+    env.print        = print -- potentially unsafe or at least annoying
+    env.unpack       = unpack
+    env.ipairs       = ipairs
+    env.pairs        = pairs
+    env.select       = select
+    env.rawget       = rawget
+    env.rawset       = rawset
+    env.setfenv      = setfenv
+    env.setmetatable = setmetatable
+    env.loadstring   = loadstring
+    env.pcall        = pcall
+    env.tostring     = tostring
+    --env.io           = clone(io) --UNSAFE! WILL CHANGE
+    env.json         = clone(require "rapidjson")
+    env.get          = get
+    env.post         = post
+    env.COMMAND      = COMMAND
+    env.command      = command
+    env.FIRE         = FIRE
+    env.fire         = fire
+    env.receive      = rec
 
-    env.prefix  = "?"
+    env.prefix       = "?"
 
-    env.cmdline = clone(cmdline)
+    env.cmdline      = clone(cmdline)
 
     local file = plugins[i]
     local f, e = loadfile(file, "t", env)
