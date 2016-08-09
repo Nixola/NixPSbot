@@ -5,6 +5,9 @@ local chat = function(rest, room, timestamp)
   if text:sub(1,1) == prefix or room == "#PM" then --this is a command!
   	--print(text)
   	local command = text:match("^" .. prefix .. "?(%w+)")
+    if not command then --not command
+      return
+    end
   	local args = {}
   	local a = text:match("^.-%s(.-)$")
   	--print(command)

@@ -62,7 +62,6 @@ receive:register(parse, "COMMANDS")
 commands = {}
 
 setmetatable(commands, {__index = function(self, name)
-    if not name then print("WEIRD") return end
     local c, e = cb(name)
     if not c then
       print("error!", e, name)
