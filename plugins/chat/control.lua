@@ -37,7 +37,7 @@ local say = function(nick, room, targetRoom, ...)
     return
   end
 
-  local words = {}
+  local words = {...}
 
   if targetRoom:sub(-1,-1) ~= "," then --this is no room!
   	table.insert(words, 1, targetRoom)
