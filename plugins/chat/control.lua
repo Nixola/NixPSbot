@@ -37,6 +37,13 @@ local say = function(nick, room, targetRoom, ...)
     return
   end
 
+  local words = {}
+
+  if targetRoom:sub(-1,-1) ~= "," then --this is no room!
+  	table.insert(words, 1, targetRoom)
+  	targetRoom = room
+  end
+
   local s = table.concat({...}, " ")
   send(targetRoom:gsub("[^%w-]", "") .. "|" .. s)
 end
