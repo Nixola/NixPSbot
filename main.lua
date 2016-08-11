@@ -90,9 +90,9 @@ string.trueNick = function(str, n)
   return str:gsub("%W", ""):lower()
 end
 
-string.rank = function(str, rank)
+string.rank = function(str, rank, ranks)
 
-  local ranks = {
+  ranks = ranks or {
     [" "] = 0;
     ["+"] = 1;
     ["★"] = 1.3;
@@ -108,6 +108,8 @@ string.rank = function(str, rank)
   local r, nick = str:match("^(.)(.-)$")
   if not rank then
     return ranks[r] or 0
+  elseif str:trueNick() == "" then
+    return ranks[str] or " "
   end
   return ranks[r] >= ranks[rank]
 end
