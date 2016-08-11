@@ -128,6 +128,11 @@ commands.reload:register(function(nick)
   local plugins = ls "plugins"
   for i = #plugins, 1, -1 do
 
+    local st, e, c = storage.new(plugins[i]:match("^plugins/(.-)%.lua$"))
+    if not st then
+      print("Could not add storage for ", plugins[i], e, c)
+    end
+
     local env        = {}
     env.send         = send
     env.sendPM       = sendPM
@@ -155,7 +160,7 @@ commands.reload:register(function(nick)
     env.fire         = fire
     env.receive      = rec
 
-    env.storage      = storage.new(plugins[i]:match("^(.-)%.lua$"))
+    env.storage      = st
 
     env.prefix       = "?"
 
