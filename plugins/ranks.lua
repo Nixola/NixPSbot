@@ -3,6 +3,7 @@
 local rank = function(nick, room, action, ...)
   local ranksj = storage.read(room .. ".json") or "{}"
   local ranks  = json.decode(ranksj)
+  print(ranksj, ranks)
 
   local owner = nick:rank "#" or nick:trueNick(cmdline.master:trueNick())
 
@@ -48,7 +49,7 @@ local rank = function(nick, room, action, ...)
     if not (nick:rank "@" or owner) then return end
 
     local args = table.concat({...}, " ")
-    local target, rank = args:match("^%s*(.-)%s*,%s*(.-)%s*$")
+    local target, rank = args:match("^%s*(.-)%s*,%s*(.-)%s*$") or args
     if not target then
       sendPM(nick, "Usage: ``" .. prefix .. "rank promote <nick>,<rank>``")
       return
@@ -77,7 +78,9 @@ local rank = function(nick, room, action, ...)
     end
 
     ranks[target:trueNick()].rank = rank
-    sendPM(nick, "The user was demoted to " .. (rank or "regular") .. ".")
+    sendPM(nick, "The user was demoted to " .. (rank == " " and "regular" or rank) .. ".")
+
+    changed = true
 
   end
 
