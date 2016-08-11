@@ -82,6 +82,8 @@ local rank = function(nick, room, action, ...)
 
     changed = true
 
+  elseif action == "refresh" then
+    changed = true
   end
 
   if changed then
