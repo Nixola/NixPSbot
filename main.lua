@@ -109,7 +109,7 @@ string.rank = function(str, rank)
   if not rank then
     return ranks[r] or 0
   end
-  return str:sub(1,1)
+  return ranks[r] >= ranks[rank]
 end
 
 
