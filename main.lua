@@ -1,5 +1,7 @@
 local ev = require('ev')
 local client = require('websocket.client').ev()
+
+local storage = require "storage"
 require "urlencode"
 --https://github.com/lipp/lua-websockets
 
@@ -150,6 +152,8 @@ commands.reload:register(function(nick)
     env.FIRE         = FIRE
     env.fire         = fire
     env.receive      = rec
+
+    env.storage      = storage.new(plugins[i]:match("^(.-)%.lua$"))
 
     env.prefix       = "?"
 
