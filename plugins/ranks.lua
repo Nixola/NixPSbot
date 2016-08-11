@@ -102,14 +102,13 @@ local rank = function(nick, room, action, ...)
     for i, v in ipairs(t) do
       if r[v.rank] < cr then
         cr = r[v.rank]
-        print(v.rank, cr, R[cr])
         l = l .. "\n" .. R[cr] .. ":\n"
       end
       l = l .. "- " .. v.name .. "\n"
     end
     storage.write(room .. ".list", l)
 
-    storage.write(room .. ".json", json.encode(rank, {pretty = true}))
+    storage.write(room .. ".json", json.encode(ranks, {pretty = true}))
   end
 end
 
