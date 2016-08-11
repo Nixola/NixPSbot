@@ -100,16 +100,18 @@ local rank = function(nick, room, action, ...)
     local r = {" ", "+", "%", "@", "#", [" "] = 0, ["+"] = 1, ["%"] = 2, ["@"] = 3, ["#"] = 4}
     local R = {[0] = "Invite", "Voice (+)", "Driver (%)", "Moderator (@)", "Room Owner (#)"}
     local cr = 4
+
+    local page = "<html><meta charset=\"UTF-8\"><head><title>List - " .. room .. "</title></head><body>%s</body></html>"
     
-    local l = R[cr] .. ":\n"
+    local l = R[cr] .. ":<br>"
     for i, v in ipairs(t) do
       if r[v.rank] < cr then
         cr = r[v.rank]
-        l = l .. "\n" .. R[cr] .. ":\n"
+        l = l .. "<br>" .. R[cr] .. ":<br>"
       end
-      l = l .. "- " .. v.name .. "\n"
+      l = l .. "- " .. v.name .. "<br>"
     end
-    storage.write(room .. ".list", l)
+    storage.write(room .. ".html", page:format(l))
 
     storage.write(room .. ".json", json.encode(ranks, {pretty = true}))
   end
