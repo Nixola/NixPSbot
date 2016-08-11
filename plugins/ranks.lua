@@ -9,7 +9,7 @@ local rank = function(nick, room, action, ...)
   local changed = false
 
   if action == "add" then
-    if not nick:rank("%") or owner then return end
+    if not (nick:rank("%") or owner) then return end
     local target = table.concat({...}, " ")
     if ranks[target:trueNick()] then
       sendPM(nick, target .. " is already on the list.")
@@ -19,7 +19,7 @@ local rank = function(nick, room, action, ...)
 
   elseif action == "promote" then
 
-    if not nick:rank "@" or owner then return end
+    if not (nick:rank "@" or owner) then return end
 
     local args = table.concat({...}, " ")
     local target, rank = args:match("^%s*(.-)%s*,%s*(.-)%s*$")
@@ -45,7 +45,7 @@ local rank = function(nick, room, action, ...)
     end
   elseif action == "demote" then
 
-    if not nick:rank "@" or owner then return end
+    if not (nick:rank "@" or owner) then return end
 
     local args = table.concat({...}, " ")
     local target, rank = args:match("^%s*(.-)%s*,%s*(.-)%s*$")
