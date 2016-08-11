@@ -9,9 +9,9 @@ storage.new = function(name)
     else
       return nil, e, c
     end
+  else
+    f:close()
   end
-
-  f:close()
 
   local t = {}
   t.write = function(filename, ...)
