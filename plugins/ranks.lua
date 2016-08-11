@@ -90,7 +90,7 @@ local rank = function(nick, room, action, ...)
     table.sort(t, function(a, b)
       if a:rank() > b:rank() then return true
       elseif a:rank() < b:rank() then return false
-      elseif a:rank() == b:rank() then return a.name:trueNick() < b.name:trueNick())
+      elseif a:rank() == b:rank() then return a.name:trueNick() < b.name:trueNick()
       end
     end)
 
