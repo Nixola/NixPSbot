@@ -95,18 +95,21 @@ local rank = function(nick, room, action, ...)
     end)
 
     local r = {" ", "+", "%", "@", "#", [" "] = 0, ["+"] = 1, ["%"] = 2, ["@"] = 3, ["#"] = 4}
-    local R = {"Invite", "Voice (+)", "Driver (%)", "Moderator (@)", "Room Owner (#)"}
+    local R = {[0] = "Invite", "Voice (+)", "Driver (%)", "Moderator (@)", "Room Owner (#)"}
     local cr = 4
     
     local l = R[cr] .. ":\n"
     for i, v in ipairs(t) do
       if r[v.rank] < cr then
         cr = r[v.rank]
+        print(v.rank, cr, R[cr])
         l = l .. "\n" .. R[cr] .. ":\n"
       end
       l = l .. "- " .. v.name .. "\n"
     end
     storage.write(room .. ".list", l)
+
+    storage.write(room .. ".json", json.encode(rank, {pretty = true}))
   end
 end
 
