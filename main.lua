@@ -5,6 +5,15 @@ require "urlencode"
 
 os.execute("mkdir ~/.nixPSbot -p")
 
+do
+  local globs = 0
+  setmetatable(_G, {__newindex = function(self, key, value) 
+    globs = globs + 1
+    print("New global", key, value, globs)
+    rawset(self, key, value)
+  end})
+end
+
 
 local args = {...}
 cmdline = {}
@@ -80,9 +89,23 @@ string.trueNick = function(str, n)
 end
 
 string.rank = function(str, rank)
-  local r = str:sub(1,1)
-  if rank then
-    return rank:match(r)
+
+  local ranks = {
+    [" "] = 0;
+    ["+"] = 1;
+    ["★"] = 1.3;
+    --staff
+    ["$"] = 1.5;
+    ["%"] = 2;
+    ["@"] = 3;
+    ["&"] = 4;
+    ["#"] = 5;
+    ["~"] = 6;
+  }
+
+  local r, nick = str:match("^(.)(.-)$")
+  if not rank then
+    return ranks[r] or 0
   end
   return str:sub(1,1)
 end
