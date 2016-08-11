@@ -84,6 +84,8 @@ local rank = function(nick, room, action, ...)
 
   elseif action == "refresh" then
     changed = true
+  elseif action == "guide" then
+    sendPM(nick, "https://static.niix.ga/perm/rankGuide.html")
   end
 
   if changed then
