@@ -1,11 +1,23 @@
 --local ranks = {" ", "+", "%", "@", "&", "#", "~", [" "] = 0, ["+"] = 1, ["%"] = 2, ["@"] = 3, ["#"] = 4}
+loadRanks = function(room)
+  return json.decode(storage.read(room .. ".json") or "{}")
+end
+
+isOwner = function(nick, ranks)
+  local a = nick:rank "#"
+  local b = nick:trueNick(cmdline.master:trueNick())
+  local c = ranks[nick:trueNick()].rank == "#"
+  
+  return a or b or c
+end
 
 local rank = function(nick, room, action, ...)
-  local ranksj = storage.read(room .. ".json") or "{}"
-  local ranks  = json.decode(ranksj)
-  print(ranksj, ranks)
+  --local ranksj = storage.read(room .. ".json") or "{}"
+  --local ranks  = json.decode(ranksj)
 
-  local owner = nick:rank "#" or nick:trueNick(cmdline.master:trueNick())
+  local ranks = loadRanks(room)
+
+  local owner = isOwner(nick, ranks)
 
   local changed = false
 
@@ -49,7 +61,8 @@ local rank = function(nick, room, action, ...)
     if not (nick:rank "@" or owner) then return end
 
     local args = table.concat({...}, " ")
-    local target, rank = args:match("^%s*(.-)%s*,%s*(.-)%s*$") or args
+    local target, rank = args:match("^%s*(.-)%s*,%s*(.-)%s*$")
+    target = target or args
     if not target then
       sendPM(nick, "Usage: ``" .. prefix .. "rank promote <nick>,<rank>``")
       return
@@ -81,12 +94,50 @@ local rank = function(nick, room, action, ...)
     sendPM(nick, "The user was demoted to " .. (rank == " " and "regular" or rank) .. ".")
 
     changed = true
+  elseif action == "remove" then
+    if not (nick:rank "%" or owner) then return end
 
+    local target = table.concat({...}, " ")
+    if not target then
+      sendPM(nick, "Usage: ``" .. prefix .. "rank remove <nick>``")
+      return
+    end
+
+    if not ranks[target:trueNick()] then
+      sendPM(nick, target .. " isn't even in my list. u wot m8")
+      return
+    end
+
+    local currentRank = ranks[target:trueNick()].rank
+
+    if (currentRank:rank() >= ("@"):rank() or currentRank:rank() >= nick:rank()) and not owner then
+      sendPM(nick, "You're not allowed to remove that user.")
+      return
+    end
+
+    ranks[target:trueNick()] = nil
+    sendPM(nick, "The user was removed from the list.")
+
+    changed = true
   elseif action == "refresh" then
     changed = true
   elseif action == "guide" then
     sendPM(nick, "https://static.niix.ga/perm/rankGuide.html")
+  elseif action == "quit" then
+    if room == "#PM" then
+      local r = table.concat({...}, " ")
+      room = r and r:gsub("[^%w-]+", "")
+      ranks = loadRanks(room)
+    end
+    if not ranks[nick:trueNick()] then
+      sendPM(nick, "You're not even in that list. u wot m8")
+      return
+    end
+    ranks[nick:trueNick()] = nil
+    sendPM(nick, "You succesfully quit the room.")
+    changed = true
   end
+
 
   if changed then
     local t = {}
