@@ -175,6 +175,7 @@ commands.reload:register(function(nick)
   end
 end, "reload")
 commands.reload:fire()
+
 ev.Loop.default:loop()
 
 os.exit(-1)
