@@ -1,4 +1,4 @@
-local mathEnv = setmetatable({tau = math.pi * 2}, {__index = function(t, k) return rawget(t, k) or math[k] end})
+local mathEnv = setmetatable({tau = math.pi * 2, e = 2.71828182845904523536028747135266249775724709369995, ln = math.log, log = math.log10}, {__index = function(t, k) return rawget(t, k) or math[k] end})
 mathEnv.math = mathEnv
 
 local math = function(rest, target, timestamp)
