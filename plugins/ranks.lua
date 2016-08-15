@@ -146,6 +146,17 @@ local rank = function(nick, room, action, ...)
     ranks[nick:trueNick()] = nil
     sendPM(nick, "You succesfully quit the room.")
     changed = true
+  elseif action == "invite" then
+  	if not owner then
+  	  sendPM(nick, "You're not allowed to invite everyone.")
+  	  return
+  	end
+
+  	for i, v in pairs(ranks) do
+  	  --send("|/w " .. i .. ", Hi! Join <<" .. room .. ">>! This is an automated message. You can \"unsubscribe\" by writing ``" .. prefix .. "rank quit " .. room .. "``.")
+  	  sendPM(i, "/invite " .. room)
+  	  sendPM(i, "This is an automated message. You can \"unsubscribe\" by writing me ``" .. prefix .. "rank quit " .. room .. "``, or just ``" .. prefix .. "rank quit`` in the room you want to quit.")
+  	end
   end
 
 
