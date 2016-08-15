@@ -120,6 +120,16 @@ local rank = function(nick, room, action, ...)
 
     changed = true
   elseif action == "refresh" then
+  	local r = table.concat({...}, " ")
+    newRoom = r and r:gsub("[^%w-]+", "")
+    if room == "#PM" and not newRoom then
+      sendPM(nick, "Usage: ``" .. prefix .. "rank refresh[ room]``")
+      return
+    end
+    ranks = newRoom and loadRanks(newRoom) or ranks
+    room = newRoom or room
+    owner = isOwner(nick, ranks)
+    if ranks[nick:trueNick].rank:rank() < ("+"):rank() and not owner then return end
     changed = true
   elseif action == "guide" then
     sendPM(nick, "https://static.niix.ga/perm/rankGuide.html")
