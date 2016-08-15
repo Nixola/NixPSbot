@@ -6,7 +6,7 @@ end
 isOwner = function(nick, ranks)
   local a = nick:rank "#"
   local b = nick:trueNick(cmdline.master:trueNick())
-  local c = ranks[nick:trueNick()].rank == "#"
+  local c = ranks[nick:trueNick()] and ranks[nick:trueNick()].rank == "#"
   
   return a or b or c
 end
@@ -173,3 +173,30 @@ local rank = function(nick, room, action, ...)
 end
 
 command("rank", rank, "rank")
+
+
+
+invites = function(args)
+  local sender, target, text = args:match("^(.-)|(.-)|(.+)$")
+
+  local s = sender:trueNick()
+
+  local cmd, rest = text:match("^/(%w+)%s*(.-)$")
+
+  if cmd ~= "invite" then return end
+
+  local room = rest:gsub("[^%w-]+", "")
+
+  if not room then return end
+
+  local ranks = loadRanks(room)
+  local owner = isOwner(sender, ranks)
+  local rank  = ranks[s] and ranks[s].rank:rank() or 0
+
+  if not ((rank >= ("+"):rank()) or owner) then return end
+
+  send("|/join " .. room)
+
+end
+
+COMMAND("pm", invites, "rank")
