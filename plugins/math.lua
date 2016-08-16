@@ -10,6 +10,8 @@ local math = function(rest, target, timestamp)
   for i, v in ipairs(blacklist) do
   	if code:match(v) then return end
   end
+  if not code:match("^%=") then return end
+  code = code:sub(2, -1)
   --if code:find '"' or code:find "'" or code:find '{' or code:find 'function' or code:match "%[%=*%[" or code:find '%.%.' then --[[sendNotice("You just WON'T hang me. Fuck you.", source)]] return end
   local expr, err = loadstring("return "..code)
   if not expr then --[[sendNotice(err, source)]] return end
