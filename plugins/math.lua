@@ -5,6 +5,7 @@ local math = function(rest, target, timestamp)
   local ts = rest:match("^(%d+)")
   rest = rest:match("^%d+|(.-)$")
   local nick, code = rest:match("^(.-)|(.+)$")
+  if nick:trueNick() == cmdline.nick:trueNick() then return end
   if not code or #code == 0 then --[[sendNotice("Do you want me to guess the expression you wanna know the result of?", source)]] return end
   local blacklist = {'"', "'", "function", "%[%=*%[", "%.%.", "^true$", "^false$", "^not%s+[_a-zA-Z][_a-zA-Z0-9]*$"}
   for i, v in ipairs(blacklist) do
