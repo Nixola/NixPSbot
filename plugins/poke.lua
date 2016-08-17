@@ -3,13 +3,16 @@ local poke = function(rest, room)
   rest = rest:match("^%d+|(.-)$")
   local nick, msg = rest:match("^(.-)|(.+)$")
   local target = msg:match("^%/me pokes (.-)$")
-  print(target)
-  if target and target:trueNick() == cmdline.nick:trueNick() then
+  if target and (target:trueNick() == cmdline.nick:trueNick()) then
+  	local s = room .. "|/me "
   	if math.random() <= 0.1 then
-  	  send(room, "|/me pokes " .. nick .. " back.")
+  	  --send(room, "|/me pokes " .. nick .. " back.")
+  	  s = s .. "pokes " .. nick .. " back."
   	else
-  	  send(room, "|/me is poked.")
+  	  --send(room, "|/me is poked.")
+  	  s = s .. "is poked."
   	end
+  	send(s)
   end
 end
 
