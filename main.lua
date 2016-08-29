@@ -114,9 +114,15 @@ string.rank = function(str, rank, ranks)
   return ranks[r] >= ranks[rank]
 end
 
-local hang = function(n)
-  if not tonumber(n) then return end
-  require "socket".select(nil, nil, n)
+local hang
+
+do
+  local ex = os.execute
+  hang = function(n)
+    if not tonumber(n) then return end
+    --require "socket".select(nil, nil, n)
+    ex("sleep " .. string.format("%d", n))
+  end
 end
 
 
