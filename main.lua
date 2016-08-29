@@ -114,6 +114,11 @@ string.rank = function(str, rank, ranks)
   return ranks[r] >= ranks[rank]
 end
 
+local hang = function(n)
+  if not tonumber(n) then return end
+  require "socket".select(nil, nil, n)
+end
+
 
 --for _, file in ipairs(ls "plugins") do
 
@@ -158,7 +163,10 @@ commands.reload:register(function(nick)
     env.command      = command
     env.FIRE         = FIRE
     env.fire         = fire
-    env.receive      = rec
+    env.receive      = receive
+    env.tonumber     = tonumber
+
+    env.wait         = hang -- TEMPORARY! BEWARE!
 
     env.storage      = st
 
