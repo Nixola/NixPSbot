@@ -152,10 +152,20 @@ local rank = function(nick, room, action, ...)
   	  return
   	end
 
+    local w
+    if tonumber((...)) then
+      w = tonumber((...))
+    end
+
   	for i, v in pairs(ranks) do
   	  --send("|/w " .. i .. ", Hi! Join <<" .. room .. ">>! This is an automated message. You can \"unsubscribe\" by writing ``" .. prefix .. "rank quit " .. room .. "``.")
-  	  sendPM(i, "/invite " .. room)
-  	  sendPM(i, "This is an automated message. You can \"unsubscribe\" by writing me ``" .. prefix .. "rank quit " .. room .. "``, or just ``" .. prefix .. "rank quit`` in the room you want to quit.")
+  	  --sendPM(i, "/invite " .. room)
+  	  sendPM(i, "Join <<" .. room .. ">>! This is an automated message. You can \"unsubscribe\" by writing me ``" .. prefix .. "rank quit " .. room .. "``, or just ``" .. prefix .. "rank quit`` in the room you want to quit.")
+
+      if w then
+        print("Waiting", w, "seconds")
+        wait(w)
+      end
   	end
   end
 
