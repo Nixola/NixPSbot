@@ -231,3 +231,16 @@ invites = function(args)
 end
 
 COMMAND("pm", invites, "rank")
+
+
+local belle = function(nick, room, ...)
+  if room == "##PM" then return end
+  local ranks = loadRanks(room)
+  local owner = isOwner(nick, ranks)
+
+  if nick:rank "+" or owner then
+    send("|/pm Bellematon,/invite " .. room)
+  end
+end
+
+command("belle", belle, "rank")
