@@ -28,6 +28,8 @@ local join = function(nick, room, targetRoom)
     return
   end
 
+  print("Joining ", targetRoom)
+
   send("|/j " .. targetRoom)
 end
 
