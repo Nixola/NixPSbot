@@ -29,7 +29,7 @@ local parse = function(msg)
   for line in msg:gmatch("[^\n]+") do
     lines[#lines+1] = line
   end
-  local room = lines[1]:match("^>(.-)\n") or lines[1]:match("^>(.-)$")
+  local room = lines[1]:match("^>(.-)\n") or lines[1]:match("^>(.-)$") or "lobby"
   if #lines > 10 then
     return --I refuse to parse all the text that's in the room before joining
   end
