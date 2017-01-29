@@ -1,7 +1,15 @@
 local mathEnv = setmetatable({tau = math.pi * 2, e = 2.71828182845904523536028747135266249775724709369995, ln = math.log, log = math.log10}, {__index = function(t, k) return rawget(t, k) or math[k] end})
 mathEnv.math = mathEnv
 
-local math = function(rest, target, timestamp)
+local math
+
+local mathPM = function(args)
+  local sender, target, text = args:match("^(.-)|(.-)|(.+)$") 
+  local rest = "00|" .. sender .. "|" .. text
+  return math(rest, "#PM", 00)
+end
+
+math = function(rest, target, timestamp)
   local ts = rest:match("^(%d+)")
   rest = rest:match("^%d+|(.-)$")
   local nick, code = rest:match("^(.-)|(.+)$")
@@ -50,3 +58,4 @@ local math = function(rest, target, timestamp)
 end
 
 COMMAND("c:", math, "math")
+COMMAND("pm", mathPM, "math")
