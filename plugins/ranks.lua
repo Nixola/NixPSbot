@@ -5,8 +5,10 @@ end
 
 isOwner = function(nick, ranks)
   local a = nick:rank "#"
-  local b = nick:trueNick(cmdline.master:trueNick())
+  local b = isMaster(nick)
   local c = ranks[nick:trueNick()] and ranks[nick:trueNick()].rank == "#"
+
+  print("isMaster", nick, a, b, c)
   
   return a or b or c
 end

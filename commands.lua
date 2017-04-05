@@ -85,7 +85,7 @@ commands.cmd:register(function(nick, ...)
 
   --print(action)
 
-  if not nick:trueNick(cmdline.master) then
+  if not isMaster(nick) then
     return
   end
 

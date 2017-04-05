@@ -28,10 +28,24 @@ for i, v in ipairs(arg) do
     end
 end
 
+string.trueNick = function(str, n)
+  if n then
+    return str:trueNick() == n
+  end
+  return str:gsub("%W", ""):lower()
+end
+
 cmdline.master = cmdline.master or "nixola"
 cmdline.masters = {}
 for m in cmdline.master:gmatch("([^,]+)") do
+  print("Master", m, m:trueNick())
   cmdline.masters[m:trueNick()] = true
+end
+do
+  local masters = cmdline.masters
+  isMaster = function(nick)
+    return masters[nick:trueNick()]
+  end
 end
 
 local cb = require "callbacks"
@@ -87,12 +101,6 @@ local rec = function(func, id)
   receive:register(func, id)
 end
 
-string.trueNick = function(str, n)
-  if n then
-    return str:trueNick() == n
-  end
-  return str:gsub("%W", ""):lower()
-end
 
 string.rank = function(str, rank, ranks)
 
@@ -134,7 +142,7 @@ end
 
 commands.reload:register(function(nick)
 
-  if nick and not cmdline.masters[nick:trueNick()] then
+  if nick and not isMaster(nick) then
     return
   end
   
@@ -183,6 +191,7 @@ commands.reload:register(function(nick)
     env.prefix       = "?"
 
     env.cmdline      = clone(cmdline)
+    env.isMaster     = isMaster
 
     local file = plugins[i]
     local f, e = loadfile(file, "t", env)
