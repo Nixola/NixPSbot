@@ -1,5 +1,6 @@
 local mathEnv = setmetatable({tau = math.pi * 2, e = 2.71828182845904523536028747135266249775724709369995, ln = math.log, log = math.log10}, {__index = function(t, k) return rawget(t, k) or math[k] end})
 mathEnv.math = mathEnv
+mathEnv.tonumber = tonumber;
 
 local math
 
