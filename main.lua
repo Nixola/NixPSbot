@@ -29,6 +29,10 @@ for i, v in ipairs(arg) do
 end
 
 cmdline.master = cmdline.master or "nixola"
+cmdline.masters = {}
+for m in cmdline.master:gmatch("([^,]+)") do
+  cmdline.masters[m:trueNick()] = true
+end
 
 local cb = require "callbacks"
 local ls = require "ls"
@@ -130,7 +134,7 @@ end
 
 commands.reload:register(function(nick)
 
-  if nick and not nick:trueNick(cmdline.master) then
+  if nick and not cmdline.masters[nick:trueNick()] then
     return
   end
   
