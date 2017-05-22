@@ -6,6 +6,7 @@ require "urlencode"
 --https://github.com/lipp/lua-websockets
 
 os.execute("mkdir ~/.nixPSbot -p")
+-- Creates a directory in home in order to store stuff. Linux only.
 
 do
   local globs = 0
@@ -15,6 +16,7 @@ do
     rawset(self, key, value)
   end})
 end
+-- Tracks the number of global variables. It pollutes stdout though.
 
 
 local args = {...}
@@ -27,6 +29,8 @@ for i, v in ipairs(arg) do
       cmdline[o] = v
     end
 end
+-- This parses the command line arguments and puts them into a global table,
+-- allowing access to them to every part of the program.
 
 string.trueNick = function(str, n)
   if n then
@@ -34,19 +38,30 @@ string.trueNick = function(str, n)
   end
   return str:gsub("%W", ""):lower()
 end
+-- This strips characters from the username, resulting in the "base nick"
+-- which actually identifies a nick. Quite barebones, prone to breakage.
+-- I should yank code from PS to fix this, as it's incomplete.
 
 cmdline.master = cmdline.master or "nixola"
+-- Sets the master of the bot. Mostly legacy code, which makes me the default
+-- master in case one isn't specified with a command line argument. Some
+-- commands (such as join, say, raw and the like) can only be used by masters.
 cmdline.masters = {}
 for m in cmdline.master:gmatch("([^,]+)") do
   print("Master", m, m:trueNick())
   cmdline.masters[m:trueNick()] = true
 end
+-- In case the --master option is a comma separated list, it populates the
+-- masters table with it in order to make it easy to have several bot owners.
+
 do
   local masters = cmdline.masters
   isMaster = function(nick)
     return masters[nick:trueNick()]
   end
 end
+-- Create a function that allows to check if a nick is a master without having
+-- to expose the table to the plugins.
 
 local cb = require "callbacks"
 local ls = require "ls"
@@ -57,23 +72,30 @@ local clone = require "clone"
 client:on_open(function()
     print('connected')
 end)
+-- Callback fired as soon as the bot estabilishes a connection to PS, before
+-- any kind of authentication is involved. I should probably move login stuff
+-- in here.
 
 client:connect("ws://sim.psim.us:8000/showdown/websocket")
+-- Provides the websocket URL of the server to connect to.
 
---local send = function(txt)
 send = function(txt)
   client:send(txt)
 end
+-- Function to send raw messages to PS. Can be safely passed to plugins without
+-- them being able to modify any table.
 
 local sendPM = function(target, txt)
   send("|/pm " .. target:trueNick() .. ", " .. txt)
 end
+-- Utility function to send PMs to users. Something feels off about this though
 
 receive = cb("receive")
+-- Create a new set of callbacks, fired every time a message is received from
+-- the server. Receives the whole message as argument.
 
 client:on_message(function(ws, msg)
   receive:fire(msg)
-    --print(msg)
   end)
 
 require "commands"

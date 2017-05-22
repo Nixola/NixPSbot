@@ -1,3 +1,8 @@
+--[[
+A function to enumerate either files or folder in a folder recursively.
+Linux only.
+]]
+
 return function(path, t)
 
   t = t or "f"
