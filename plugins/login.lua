@@ -5,8 +5,8 @@ local challstring = function(chstr)
 
   local t = {}
   t.act      = "getassertion"
-  t.userid   = cmdline.nick:trueNick()
-  t.pass     = cmdline.pass
+  t.userid   = credentials.nick:trueNick()
+  t.pass     = credentials.password
   t.challstr = chstr
 
   local assertion, url = get("http://play.pokemonshowdown.com/action.php", t)
@@ -20,10 +20,10 @@ local challstring = function(chstr)
     os.exit()
   elseif assertion == ";" then
     t.act  = "login"
-    t.name = cmdline.nick --t.userid
+    t.name = credentials.nick --t.userid
     t.userid = nil
     --t.pass = cmdline.pass
-    local data, body = post("http://play.pokemonshowdown.com/action.php", t)
+    local data, body = post("https://play.pokemonshowdown.com/action.php", t)
     if data:sub(1, 1) ~= "]" then
       print("Error. Aborting.")
       print(data)
@@ -36,28 +36,6 @@ local challstring = function(chstr)
 
   print("Logged in. Most likely.")
 
-
-  --[[legacy code
-  --the following happens if the nick is registered.
-  
-  --local t = {}
-  t.act = "login"
-  t.name = cmdline.nick --"FuckingClod"
-  t.pass = cmdline.pass --"87654132"
-  t.challstr = chstr
-
-  local data, body = post("http://play.pokemonshowdown.com/action.php", t)
-
-  if data:sub(1,1) ~= "]" then
-  	print("Error. Aborting.")
-  	print(data)
-  	os.exit()
-  end
-
-  local assertion = json.decode(data:sub(2, -1)).assertion
-
-  send("|/trn " .. t.name .. ",0," .. assertion)
-  print("Logged in, theoretically")--]]
 end
 
 --COMMANDS.challstr:register(challstring, "login")

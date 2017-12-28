@@ -21,6 +21,7 @@ end
 
 local args = {...}
 cmdline = {}
+credentials = require "credentials"
 for i, v in ipairs(arg) do
     if v:match("^%-%-") then --option
       local optionName = v:match("^%-%-(.+)")
@@ -30,6 +31,7 @@ for i, v in ipairs(arg) do
       cmdline[prevOptionName] = v
     end
 end
+cmdline.nick =  credentials.nick
 -- This parses the command line arguments and puts them into a global table,
 -- allowing access to them to every part of the program.
 
@@ -217,6 +219,9 @@ commands.reload:register(function(nick)
     env.isMaster     = isMaster
 
     local file = plugins[i]
+    if file == "plugins/login.lua" then
+      env.credentials = clone(credentials)
+    end
     local f, e = loadfile(file, "t", env)
 
     if f then f()
