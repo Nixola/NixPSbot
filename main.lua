@@ -24,10 +24,11 @@ cmdline = {}
 credentials = require "credentials"
 for i, v in ipairs(arg) do
     if v:match("^%-%-") then --option
-      cmdline[v:match("^%-%-(.-)$")] = true
+      local optionName = v:match("^%-%-(.+)")
+      cmdline[optionName] = true
     else --par
-      local o = arg[i-1]:match("^%-%-(.-)$")
-      cmdline[o] = v
+      local prevOptionName = arg[i-1]:match("^%-%-(.+)")
+      cmdline[prevOptionName] = v
     end
 end
 cmdline.nick =  credentials.nick
