@@ -1,7 +1,3 @@
-local socket = require "socket"
-local kb = socket.tcp()
-kb:setfd(0)
-
 local ev = require('ev')
 local client = require('websocket.client').ev()
 
@@ -102,13 +98,16 @@ receive = cb("receive")
 -- the server. Receives the whole message as argument.
 
 client:on_message(function(ws, msg)
+  print("RECV", msg)
   receive:fire(msg)
-  local recv = socket.select({kb}, nil, 0)
-  if recv and recv[1] then
-    local cmd = recv[1]:receive("*l")
-    send(cmd)
-  end
-  end)
+end)
+
+local io = ev.IO.new(function()
+  local msg = io.stdin:read "*l"
+  send(msg)
+  print("SENDING", msg)
+end, 0, ev.READ)
+io:start(ev.Loop.default)
 
 require "commands"
 if cmdline.log then
