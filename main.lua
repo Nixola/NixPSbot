@@ -1,3 +1,7 @@
+local socket = require "socket"
+local kb = socket.tcp()
+kb:setfd(0)
+
 local ev = require('ev')
 local client = require('websocket.client').ev()
 
@@ -99,6 +103,11 @@ receive = cb("receive")
 
 client:on_message(function(ws, msg)
   receive:fire(msg)
+  local recv = socket.select({kb}, nil, 0)
+  if recv and recv[1] then
+    local cmd = recv[1]:receive("*l")
+    send(cmd)
+  end
   end)
 
 require "commands"
