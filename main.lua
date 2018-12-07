@@ -102,11 +102,14 @@ client:on_message(function(ws, msg)
   receive:fire(msg)
 end)
 
+-- Creates a listener for stdin (file descriptor 0) that runs every time it's ready for reading
 local io = ev.IO.new(function()
   local msg = io.stdin:read "*l"
   send(msg)
   print("SENDING", msg)
 end, 0, ev.READ)
+
+-- Add the listener to main loop
 io:start(ev.Loop.default)
 
 require "commands"
