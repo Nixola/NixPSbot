@@ -197,7 +197,8 @@ commands.reload:register(function(nick)
   local plugins = ls "plugins"
   for i = #plugins, 1, -1 do
 
-    local st, e, c = storage.new(plugins[i]:match("^plugins/(.-)%.lua$"))
+    local pluginName = plugins[i]:match("^plugins/(.-)%.lua$")
+    local st, e, c = storage.new(pluginName)
     if not st then
       print("Could not add storage for ", plugins[i], e, c)
     end
@@ -223,8 +224,8 @@ commands.reload:register(function(nick)
     env.json         = clone(require "rapidjson")
     env.get          = get
     env.post         = post
-    env.COMMAND      = COMMAND
-    env.command      = command
+    env.COMMAND      = function(cmd, func) return COMMAND(cmd, func, pluginName) end
+    env.command      = function(cmd, func) return command(cmd, func, pluginName) end
     env.FIRE         = FIRE
     env.fire         = fire
     env.receive      = receive
