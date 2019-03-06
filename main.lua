@@ -18,6 +18,8 @@ do
 end
 -- Tracks the number of global variables. It pollutes stdout though.
 
+local sendQueue = {}
+
 
 local args = {...}
 cmdline = {}
@@ -82,8 +84,13 @@ end)
 client:connect("ws://sim.psim.us:8000/showdown/websocket")
 -- Provides the websocket URL of the server to connect to.
 
-send = function(txt)
-  client:send(txt)
+send = function(txt, priority)
+  priority = priority or 1
+  local msg = {text = txt, priority = priority, time = os.clock()}
+  sendQueue[#sendQueue + 1] = msg
+  table.sort(sendQueue, function(a, b)
+    return (a.priority == b.priority) and (a.time < b.time) or (a.priority > b.priority)
+  end)
 end
 -- Function to send raw messages to PS. Can be safely passed to plugins without
 -- them being able to modify any table.
@@ -111,6 +118,18 @@ end, 0, ev.READ)
 
 -- Add the listener to main loop
 io:start(ev.Loop.default)
+
+-- Creates a timed function that runs every .5 seconds. Used to send rate-limited messages.
+local timer = ev.Timer.new(function()
+  local msg = sendQueue[1]
+  if msg then
+    client:send(msg.text)
+    table.remove(sendQueue, 1)
+  end
+end, 0.01, tonumber(cmdline.rate) or 0.75)
+
+-- Add the timer to main loop
+timer:start(ev.Loop.default)
 
 require "commands"
 if cmdline.log then
