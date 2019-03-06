@@ -38,16 +38,6 @@ cmdline.nick =  credentials.nick
 -- This parses the command line arguments and puts them into a global table,
 -- allowing access to them to every part of the program.
 
-string.trueNick = function(str, n)
-  if n then
-    return str:trueNick() == n
-  end
-  return str:gsub("%W", ""):lower()
-end
--- This strips characters from the username, resulting in the "base nick"
--- which actually identifies a nick. Quite barebones, prone to breakage.
--- I should yank code from PS to fix this, as it's incomplete.
-
 cmdline.master = cmdline.master or "nixola"
 -- Sets the master of the bot. Mostly legacy code, which makes me the default
 -- master in case one isn't specified with a command line argument. Some
