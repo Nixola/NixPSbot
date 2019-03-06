@@ -1,7 +1,7 @@
 string.split = function(str, sep)
   assert(#sep == 1, "Invalid separator")
   local t = {}
-  for p in str:gmatch(("([^%s])"):format(sep)) do
+  for p in str:gmatch(("([^%s]+)"):format(sep)) do
     t[#t+1] = p
   end
   return unpack(t)
