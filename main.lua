@@ -3,6 +3,7 @@ local client = require('websocket.client').ev()
 
 local storage = require "storage"
 require "urlencode"
+require "utils"
 --https://github.com/lipp/lua-websockets
 
 os.execute("mkdir ~/.nixPSbot -p")
