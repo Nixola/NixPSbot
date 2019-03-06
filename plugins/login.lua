@@ -34,8 +34,6 @@ local challstring = function(chstr)
 
   send("|/trn " .. (t.name or t.userid) .. ",0," .. assertion)
 
-  print("Logged in. Most likely.")
-
 end
 
 --COMMANDS.challstr:register(challstring, "login")
