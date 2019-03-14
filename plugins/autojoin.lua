@@ -60,6 +60,6 @@ local autojoin = function(nick, room, action, ...)
   end
 end
 
-COMMAND("updateuser", onFirstJoin, "autojoin")
+COMMAND("updateuser", onFirstJoin)
 
-command("autojoin", autojoin, "autojoin")
+command("autojoin", autojoin)

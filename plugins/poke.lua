@@ -16,4 +16,4 @@ local poke = function(rest, room)
   end
 end
 
-COMMAND("c:", poke, "poke")
+COMMAND("c:", poke)
