@@ -19,7 +19,7 @@ local tell = function(nick, room, ...) --this is the command
 
 end
 
-command("tell", tell, "tell")
+command("tell", tell)
 
 --nick is the nickname the messages were left for. nick2 is in case the user just changed nick to another one, so the second would receive the me
 local deliver = function(nick)
@@ -51,8 +51,8 @@ local pm = function(rest)
 end
 
 --COMMAND("chat", activity, "tell")
-COMMAND("c:",   chatplus, "tell")
-COMMAND("join", deliver,  "tell")
-COMMAND("pm",   pm,       "tell")
-COMMAND("name", name,     "tell")
+COMMAND("c:",   chatplus)
+COMMAND("join", deliver)
+COMMAND("pm",   pm)
+COMMAND("name", name)
 --COMMAND("join", function(...) print("JOIN", ...) end, "tell")

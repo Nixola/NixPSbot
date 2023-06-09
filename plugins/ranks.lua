@@ -205,9 +205,6 @@ local rank = function(nick, room, action, ...)
   end
 end
 
-command("rank", rank, "rank")
-
-
 
 invites = function(args)
   local sender, target, text = args:match("^(.-)|(.-)|(.+)$")
@@ -232,8 +229,6 @@ invites = function(args)
 
 end
 
-COMMAND("pm", invites, "rank")
-
 
 local belle = function(nick, room, ...)
   if room == "##PM" then return end
@@ -245,4 +240,6 @@ local belle = function(nick, room, ...)
   end
 end
 
-command("belle", belle, "rank")
+command("rank", rank)
+COMMAND("pm", invites)
+command("belle", belle)

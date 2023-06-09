@@ -37,6 +37,6 @@ COMMANDS.chat:register(chat, "chat")
 COMMANDS["c:"]:register(cts, "chat:")
 COMMANDS.pm:register(pm, "chatpm")--]]
 
-COMMAND("chat", chat, "chat")
-COMMAND("c:", cts, "chat:")
-COMMAND("pm", pm, "chatpm")
+COMMAND("chat", chat)
+COMMAND("c:", cts)
+COMMAND("pm", pm)

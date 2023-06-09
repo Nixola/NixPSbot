@@ -59,5 +59,5 @@ math = function(rest, target, timestamp)
   --return true
 end
 
-COMMAND("c:", math, "math")
-COMMAND("pm", mathPM, "math")
+COMMAND("c:", math)
+COMMAND("pm", mathPM)

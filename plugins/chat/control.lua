@@ -51,13 +51,13 @@ local say = function(nick, room, targetRoom, ...)
 end
 
 --commands.raw:register(raw, "control")
-command("raw", raw, "control")
+command("raw", raw)
 
-command("pm", pm, "control")
+command("pm", pm)
 
-command("join", join, "control")
-command("j", join, "control")
+command("join", join)
+command("j", join)
 
-command("say", say, "control")
-command("s", say, "control")
-command("c", say, "control")
+command("say", say)
+command("s", say)
+command("c", say)

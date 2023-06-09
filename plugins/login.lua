@@ -42,5 +42,4 @@ local challstring = function(chstr)
 
 end
 
---COMMANDS.challstr:register(challstring, "login")
-COMMAND("challstr", challstring, "login")
+COMMAND("challstr", challstring)
