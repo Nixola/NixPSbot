@@ -9,8 +9,8 @@ downloading/installing/enabling/whatever any from an untrusted source.
 ]]
 
 storage.new = function(name)
-  if name:match("/") then return end
-  -- No slashes allowed in folder name. Any attempt to do so will result in naught.
+  if not name or name:match("[/'\n]") then return end
+  -- No slashes allowed in folder name. Any attempt to do so will result in naught. Single quotes and newlines are out, too.
   local f, e, c = io.open("storage/" .. name)
   -- Checking if the folder exists
   if not f then
@@ -73,6 +73,18 @@ storage.new = function(name)
     if not r then return r, e, c end
 
     f:close()
+  end
+
+  t.list = function()
+    local p = io.popen("ls 'storage/" .. name .. "'")
+    local line = p:read '*l'
+    local t = {}
+    while line do
+      t[#t+1] = line
+      line = p:read '*l'
+    end
+    p:close()
+    return t
   end
 
   return t

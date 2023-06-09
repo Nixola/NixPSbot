@@ -1,4 +1,5 @@
 local first = true
+local folder = cmdline.nick:trueNick()
 
 local onFirstJoin = function(arg)
   if not first then return end
@@ -16,7 +17,7 @@ local onFirstJoin = function(arg)
 
   first = false
 
-  local rooms = {(storage.read("rooms") or ""):split("\n")}
+  local rooms = {(storage.read(folder) or ""):split("\n")}
 
   for i, room in ipairs(rooms) do
     send("|/join " .. room)
@@ -27,7 +28,7 @@ end
 local autojoin = function(nick, room, action, ...)
   if not isMaster(nick) then return end
   
-  local rooms = {(storage.read("rooms") or ""):split("\n")}
+  local rooms = {(storage.read(folder) or ""):split("\n")}
   local write = false
 
   if action == "add" then
@@ -56,7 +57,7 @@ local autojoin = function(nick, room, action, ...)
   end
 
   if write then
-    storage.write("rooms", table.concat(rooms, "\n"))
+    storage.write(folder, table.concat(rooms, "\n"))
   end
 end
 

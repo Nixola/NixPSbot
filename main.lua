@@ -34,6 +34,9 @@ for i, v in ipairs(arg) do
       cmdline[prevOptionName] = v
     end
 end
+if cmdline.credentials then
+  credentials = require(cmdline.credentials)
+end
 cmdline.nick =  credentials.nick
 -- This parses the command line arguments and puts them into a global table,
 -- allowing access to them to every part of the program.
@@ -72,7 +75,7 @@ end)
 -- any kind of authentication is involved. I should probably move login stuff
 -- in here.
 
-client:connect("ws://sim.psim.us:8000/showdown/websocket")
+print("Connecting:", client:connect("ws://sim.psim.us:8000/showdown/websocket"))
 -- Provides the websocket URL of the server to connect to.
 
 send = function(txt, priority)
@@ -98,6 +101,16 @@ receive = cb("receive")
 client:on_message(function(ws, msg)
   print("RECV", msg)
   receive:fire(msg)
+end)
+
+client:on_close(function(...)
+  print("DED", ...)
+  os.exit(-1)
+end)
+
+client:on_error(function(...)
+  print("ERROR", ...)
+  os.exit(-1)
 end)
 
 -- Creates a listener for stdin (file descriptor 0) that runs every time it's ready for reading
@@ -153,7 +166,8 @@ string.rank = function(str, rank, ranks)
   ranks = ranks or {
     [" "] = 0;
     ["+"] = 1;
-    ["★"] = 1.3;
+    --["★"] = 1.3;
+    ["*"] = 1.3;
     --staff
     ["$"] = 1.5;
     ["%"] = 2;
@@ -231,6 +245,8 @@ commands.reload:register(function(nick)
     env.receive      = receive
     env.tonumber     = tonumber
 
+    env.os           = {time = os.time, date = os.date}
+
     env.wait         = hang -- TEMPORARY! BEWARE!
 
     env.storage      = st
@@ -239,10 +255,12 @@ commands.reload:register(function(nick)
 
     env.cmdline      = clone(cmdline)
     env.isMaster     = isMaster
+    env._G = env
 
     local file = plugins[i]
     if file == "plugins/login.lua" then
       env.credentials = clone(credentials)
+      env.os.exit = os.exit
     end
     local f, e = loadfile(file, "t", env)
 
